@@ -1,6 +1,7 @@
 import random
 import math
 import os
+import sys
 
 os.system("clear")
 
@@ -8,20 +9,20 @@ os.system("clear")
 #Open word file and create a list of them
 file = open("words.txt").read()
 master_list = file.split()
-
+valid_letters = ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"]
 easy_list = []
 medium_list = []
 hard_list = []
 mystery_word = ""
 correct_letters = []
 right_letters =""
-#print(correct_letters)
 current_guesses = []
 already_guessed = True
 game_over = False
 game_input = False
 lives = 8
 newword=[]
+count = 0;
 
 #Make three lists (Easy, Medium, Hard) from the master_list of words
 for word in master_list:
@@ -53,12 +54,6 @@ def generate_mystery_word (game_mode):
 
     return mystery_word
 
-#def play_game (mystery_word):
-    #guess = input("Guess a letter >>> ")
-    #if mystery_word != "":
-        #print ("OMG IT WORKS")
-
-
 
 def display_letter(letter, guesses):
     """
@@ -77,8 +72,6 @@ def print_word(word, guesses):
     print(" ".join(output_letters))
     
 
-    
-#print_word(word, current_guesses)    
 
 while game_input == False:
     game_mode = input("""Welcome to Mystery Word! Type in the number to select your level of difficulty:
@@ -94,7 +87,6 @@ while game_input == False:
         
         mystery_word = generate_mystery_word(game_mode)
         game_input = True
-
 
 
 
@@ -128,11 +120,15 @@ while game_over == False:
         if guess_letter in current_guesses:
             os.system("clear")
             print("You already guessed that letter. Pick again.")
+        elif guess_letter not in valid_letters:
+            os.system("clear")
+            print("That's not a valid selection. Pick again.")
         else:
             os.system("clear")
             print("**************")
             current_guesses.append(guess_letter)
             print_word(mystery_word, current_guesses)
+            count = 0
             already_guessed = False
     
             
@@ -149,10 +145,18 @@ while game_over == False:
         print("You are out of lives. The correct answer is:",mystery_word)
         game_over = True 
         playagain = input("Do you want to play again? Y/N: ")
+        if playagain == "y" or playagain == "Y":
+            python = sys.executable
+            os.execl(python, python, * sys.argv)
     
-
-  
-
-
-
+    for letters in mystery_word:
+        if letters in current_guesses:
+            count = count + 1
+    if count == len(mystery_word):
+        print("You win! The correct answer is:",mystery_word)
+        game_over = True 
+        playagain = input("Do you want to play again? Y/N: ")
+        if playagain == "y" or playagain == "Y":
+            python = sys.executable
+            os.execl(python, python, * sys.argv)
 
